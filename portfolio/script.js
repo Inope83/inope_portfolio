@@ -5,6 +5,8 @@
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  var isMobile = window.matchMedia('(max-width: 960px)').matches;
+
   // Mobile menu toggle
   var menuToggle = document.querySelector('.menu-toggle');
   var nav = document.querySelector('.nav');
@@ -26,30 +28,64 @@
   });
 
   // Reveal animations on scroll
-  var revealEls = document.querySelectorAll('.project, .skill-card, .service-card, .timeline-item, .testimonial');
+  var revealEls = document.querySelectorAll(
+    '.project, .skill-card, .service-card, .timeline-item'
+  );
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) entry.target.classList.add('visible');
     });
-  }, { root: null, rootMargin: '0px 0px -80px 0px', threshold: 0.1 });
+  }, { root: null, rootMargin: '0px 0px -60px 0px', threshold: 0.12 });
   revealEls.forEach(function (el) { observer.observe(el); });
 
   // Stagger animations
-  document.querySelectorAll('.project').forEach(function (project, index) {
-    project.style.transitionDelay = (index * 0.08) + 's';
-  });
-  document.querySelectorAll('.skill-card').forEach(function (card, i) {
-    card.style.transitionDelay = (i * 0.1) + 's';
-  });
-  document.querySelectorAll('.service-card').forEach(function (card, i) {
-    card.style.transitionDelay = (i * 0.1) + 's';
-  });
-  document.querySelectorAll('.timeline-item').forEach(function (item, i) {
-    item.style.transitionDelay = (i * 0.12) + 's';
-  });
-  document.querySelectorAll('.testimonial').forEach(function (t, i) {
-    t.style.transitionDelay = (i * 0.1) + 's';
-  });
+  document.querySelectorAll('.project, .skill-card, .service-card, .timeline-item')
+    .forEach(function (el, index) {
+      el.style.transitionDelay = (index * 0.08) + 's';
+    });
+
+  // Stat counter animation
+  var statEls = document.querySelectorAll('.stat-num');
+  var statObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var el = entry.target;
+      statObserver.unobserve(el);
+      var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+      var suffix = target >= 100 ? '%' : '+';
+      if (isMobile || !window.requestAnimationFrame) {
+        el.textContent = target + suffix;
+        return;
+      }
+      var start = null;
+      var duration = 1400;
+      function step(ts) {
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased) + suffix;
+        if (p < 1) window.requestAnimationFrame(step);
+      }
+      window.requestAnimationFrame(step);
+    });
+  }, { threshold: 0.5 });
+  statEls.forEach(function (el) { statObserver.observe(el); });
+
+  // Active nav link on scroll
+  var sections = document.querySelectorAll('section[id]');
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav a'));
+  if (sections.length && navLinks.length) {
+    var navObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var id = entry.target.getAttribute('id');
+        navLinks.forEach(function (a) {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(function (s) { navObserver.observe(s); });
+  }
 
   // Back to top button
   var backTop = document.getElementById('backTop');
@@ -58,28 +94,15 @@
       backTop.classList.toggle('visible', window.scrollY > 600);
     });
     backTop.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: isMobile ? 'auto' : 'smooth' });
     });
   }
-
-  // Smooth scroll for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-    anchor.addEventListener('click', function (e) {
-      var href = this.getAttribute('href');
-      if (href === '#') return;
-      var target = document.querySelector(href);
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
 
   // Header background change on scroll
   var header = document.querySelector('.header');
   if (header) {
     window.addEventListener('scroll', function () {
-      header.style.background = window.scrollY > 50 ? 'rgba(15, 15, 15, 0.95)' : 'rgba(15, 15, 15, 0.8)';
+      header.classList.toggle('scrolled', window.scrollY > 50);
     });
   }
 })();
