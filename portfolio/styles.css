@@ -417,7 +417,7 @@ body {
 
 /* ============ SECTIONS ============ */
     .section {
-      padding: var(--space-xl) var(--space-lg);
+      padding: var(--space-lg) var(--space-lg);
       position: relative;
   scroll-margin-top: 76px;
 }
