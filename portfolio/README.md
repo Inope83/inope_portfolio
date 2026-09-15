@@ -1,15 +1,18 @@
 # portfolio
 
-127.0.0.1
 Inope Lopes — Software Developer
 
 SOFTWARE DEVELOPER
+
 Crafting code that matters.
 
 I build software solutions that are clean, efficient, and reliable.
 
 About
+
+
 Hello, I'm Inope.
+
 
 I'm an engineering student at UNTL's Faculty of Engineering, Science and Technology, on a path to becoming a software developer. Passionate about coding, problem-solving, and building applications that make a difference.
 
