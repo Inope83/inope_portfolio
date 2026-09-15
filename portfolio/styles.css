@@ -736,7 +736,7 @@ body {
 .projects {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
+  gap: var(--space-xl);
 }
 
 .project {
@@ -1293,7 +1293,7 @@ body {
   .nav.open {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
+    gap: var(--space-sm);
     position: fixed;
     top: 0;
     right: 0;
