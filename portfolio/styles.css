@@ -172,6 +172,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  text-align: center;
   padding: calc(96px + var(--space-2xl)) var(--space-lg) var(--space-2xl);
   max-width: 1000px;
   margin: 0 auto;
