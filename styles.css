@@ -41,7 +41,14 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
 body {
+  overflow-x: hidden;
+  touch-action: pan-y;
+}
+
+body {
+  overflow-x: hidden;
   font-family: var(--font-sans);
   background: var(--bg);
   color: var(--text);
@@ -1284,6 +1291,15 @@ body {
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 960px) {
+  .hero::before,
+  .hero::after,
+  .about-visual::before,
+  .about-visual::after,
+  .hero-meta::before,
+  .hero-meta::after {
+    display: none;
+  }
+
   .nav {
     display: none;
   }
