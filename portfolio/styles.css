@@ -172,7 +172,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: calc(96px + var(--space-2xl)) var(--space-lg) var(--space-2xl);
+  padding: calc(76px + var(--space-xl)) var(--space-lg) var(--space-2xl);
   max-width: 1000px;
   margin: 0 auto;
   position: relative;
