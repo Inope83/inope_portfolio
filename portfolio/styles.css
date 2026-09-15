@@ -416,9 +416,9 @@ body {
 }
 
 /* ============ SECTIONS ============ */
-.section {
-  padding: var(--space-3xl) var(--space-lg);
-  position: relative;
+    .section {
+      padding: var(--space-xl) var(--space-lg);
+      position: relative;
   scroll-margin-top: 76px;
 }
 
