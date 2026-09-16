@@ -183,9 +183,9 @@ body.menu-open {
   position: fixed;
   inset: 0;
   z-index: 99;
-  background: rgba(5, 5, 7, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: linear-gradient(to left, rgba(5, 5, 7, 0.5) 0%, rgba(5, 5, 7, 0.15) 60%, transparent 100%);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -196,12 +196,12 @@ body.menu-open {
   visibility: visible;
 }
 
-/* Active nav link */
-.nav a.active {
+/* Active nav link (desktop navbar only) */
+.nav:not(.open) a.active {
   color: var(--text);
 }
 
-.nav a.active::after {
+.nav:not(.open) a.active::after {
   content: '';
   position: absolute;
   left: 0;
@@ -1328,6 +1328,29 @@ body.menu-open {
   color: var(--text-muted);
 }
 
+/* ============ MOBILE MENU ANIMATIONS ============ */
+@keyframes menuPop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes menuItem {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* ============ RESPONSIVE ============ */
 @media (max-width: 960px) {
   .menu-toggle {
@@ -1349,22 +1372,78 @@ body.menu-open {
   .nav.open {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
+    gap: 2px;
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: min(240px, 60vw);
-    background: var(--bg-soft);
-    border-left: 1px solid var(--border);
-    padding: 110px var(--space-lg);
-    box-shadow: -24px 0 60px rgba(0, 0, 0, 0.5);
+    top: 74px;
+    right: var(--space-md);
+    width: min(210px, 60vw);
+    background: rgba(17, 17, 24, 0.92);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 10px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.04);
     z-index: 100;
+    animation: menuPop 0.32s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  }
+
+  .nav.open::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 18px;
+    right: 18px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.65;
+    pointer-events: none;
   }
 
   .nav.open a {
-    font-size: 0.95rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    width: 100%;
+    padding: 0.55rem 0.9rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.25s ease;
+    animation: menuItem 0.32s ease both;
+  }
+
+  .nav.open a::after {
+    content: '→';
+    font-size: 0.8rem;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: all 0.25s ease;
+  }
+
+  .nav.open a:hover,
+  .nav.open a.active {
+    background: var(--accent-soft);
     color: var(--text);
+  }
+
+  .nav.open a:hover::after,
+  .nav.open a.active::after {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .nav.open a:nth-child(1) { animation-delay: 0.03s; }
+  .nav.open a:nth-child(2) { animation-delay: 0.06s; }
+  .nav.open a:nth-child(3) { animation-delay: 0.09s; }
+  .nav.open a:nth-child(4) { animation-delay: 0.12s; }
+  .nav.open a:nth-child(5) { animation-delay: 0.15s; }
+  .nav.open a:nth-child(6) { animation-delay: 0.18s; }
+
+  .nav.open a.active::after {
+    color: var(--accent);
   }
 
   .menu-toggle {
@@ -1428,7 +1507,7 @@ body.menu-open {
   }
 
   .hero {
-    padding: calc(90px + var(--space-2xl)) var(--space-md) var(--space-2xl);
+    padding: calc(76px + var(--space-md)) var(--space-md) var(--space-2xl);
   }
 
   .hero-meta {
