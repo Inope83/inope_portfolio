@@ -1560,7 +1560,9 @@ body.menu-open {
   .project,
   .skill-card,
   .service-card,
-  .timeline-item {
+  .timeline-item,
+  .nav.open,
+  .nav.open a {
     opacity: 1 !important;
     transform: none !important;
     animation: none !important;
