@@ -211,10 +211,7 @@ body {
   z-index: -1;
 }
 
-.hero-tag {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
+.28em;
   color: var(--accent);
   margin-bottom: var(--space-md);
   opacity: 0;
@@ -1291,6 +1288,9 @@ body {
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 960px) {
+  .menu-toggle {
+    display: flex;
+  }
   .hero::before,
   .hero::after,
   .about-visual::before,
@@ -1327,6 +1327,19 @@ body {
 
   .menu-toggle {
     display: flex;
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 0.5rem;
+    z-index: 101;
+  }
+
+  .menu-toggle span {
+    width: 20px;
+    height: 2px;
   }
 
   .about-grid {
