@@ -19,7 +19,7 @@
 
   <header class="header">
     <a href="#" class="logo">Inope.dev</a>
-    <nav class="nav">
+    <nav class="nav" id="navMenu">
       <a href="#about">About</a>
       <a href="#work">Work</a>
       <a href="#services">Services</a>
@@ -27,12 +27,14 @@
       <a href="#experience">Experience</a>
       <a href="#contact">Contact</a>
     </nav>
-    <button class="menu-toggle" aria-label="Toggle menu">
+    <button class="menu-toggle" aria-label="Toggle menu" aria-controls="navMenu" aria-expanded="false">
       <span></span>
       <span></span>
       <span></span>
     </button>
   </header>
+
+  <div class="menu-backdrop"></div>
 
   <main>
     <!-- ============ HERO ============ -->

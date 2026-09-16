@@ -10,21 +10,45 @@
   // Mobile menu toggle
   var menuToggle = document.querySelector('.menu-toggle');
   var nav = document.querySelector('.nav');
+  var backdrop = document.querySelector('.menu-backdrop');
+
+  function setMenu(open) {
+    if (!nav || !menuToggle) return;
+    nav.classList.toggle('open', open);
+    menuToggle.classList.toggle('active', open);
+    document.body.classList.toggle('menu-open', open);
+    if (backdrop) backdrop.classList.toggle('visible', open);
+    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
   if (menuToggle && nav) {
     menuToggle.addEventListener('click', function () {
-      nav.classList.toggle('open');
-      menuToggle.classList.toggle('active');
-      document.body.classList.toggle('menu-open');
+      setMenu(!nav.classList.contains('open'));
     });
   }
+
+  // Close on backdrop tap
+  if (backdrop) {
+    backdrop.addEventListener('click', function () {
+      setMenu(false);
+    });
+  }
+
+  // Close on ESC key
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setMenu(false);
+  });
 
   // Close menu when clicking on a link
   document.querySelectorAll('.nav a').forEach(function (link) {
     link.addEventListener('click', function () {
-      nav.classList.remove('open');
-      menuToggle.classList.remove('active');
-      document.body.classList.remove('menu-open');
+      setMenu(false);
     });
+  });
+
+  // Close menu if viewport grows past mobile width
+  window.addEventListener('resize', function () {
+    if (!window.matchMedia('(max-width: 960px)').matches) setMenu(false);
   });
 
   // Reveal animations on scroll
