@@ -1349,12 +1349,12 @@ body.menu-open {
   .nav.open {
     display: flex;
     flex-direction: column;
-    gap: var(--space-lg);
+    gap: var(--space-md);
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
-    width: min(300px, 82vw);
+    width: min(240px, 60vw);
     background: var(--bg-soft);
     border-left: 1px solid var(--border);
     padding: 110px var(--space-lg);
@@ -1363,7 +1363,7 @@ body.menu-open {
   }
 
   .nav.open a {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     color: var(--text);
   }
 
