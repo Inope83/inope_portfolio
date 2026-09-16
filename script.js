@@ -129,4 +129,58 @@
       header.classList.toggle('scrolled', window.scrollY > 50);
     });
   }
+
+  // Hero code editor typewriter
+  (function () {
+    var codeEl = document.getElementById('typedCode');
+    if (!codeEl) return;
+    if (!window.matchMedia('(min-width: 961px)').matches) return;
+
+    var lines = [
+      { text: 'const developer = {', cls: 'code-line-k' },
+      { text: "  name: 'Inope83',", cls: 'code-line-s' },
+      { text: "  role: 'Software Developer',", cls: 'code-line-s' },
+      { text: "  country: 'Timor-Leste',", cls: 'code-line-s' },
+      { text: "  stack: ['HTML', 'CSS', 'JS', 'Python', 'PHP', 'Django'],", cls: 'code-line-v' },
+      { text: '  available: true,', cls: 'code-line-v' },
+      { text: '};', cls: 'code-line-k' }
+    ];
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function renderDone() {
+      codeEl.innerHTML = lines.map(function (l) {
+        return '<span class="' + l.cls + '">' + l.text + '</span>';
+      }).join('\n') + '<span class="code-cursor"></span>';
+    }
+
+    if (reduceMotion) {
+      renderDone();
+      return;
+    }
+
+    var done = [];
+    var li = 0, ci = 0, cur = '';
+    var speed = 18;
+
+    function type() {
+      if (li >= lines.length) { renderDone(); return; }
+      var line = lines[li];
+      if (ci < line.text.length) {
+        cur += line.text.charAt(ci) === ' ' ? '\u00A0' : line.text.charAt(ci);
+        ci++;
+      } else {
+        done.push('<span class="' + line.cls + '">' + cur + '</span>');
+        cur = '';
+        ci = 0;
+        li++;
+        if (li >= lines.length) { renderDone(); return; }
+      }
+      codeEl.innerHTML = done.join('\n') + '<span class="' + lines[li].cls + '">' + cur +
+        '</span><span class="code-cursor"></span>';
+      setTimeout(type, speed);
+    }
+
+    type();
+  })();
 })();

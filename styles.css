@@ -215,13 +215,19 @@ body.menu-open {
 /* ============ HERO ============ */
 .hero {
   min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: var(--space-xl);
+  padding: calc(76px + var(--space-xl)) var(--space-lg) var(--space-2xl);
+  margin: 0;
+  position: relative;
+}
+
+.hero-text {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: calc(76px + var(--space-xl)) var(--space-lg) var(--space-2xl);
-  max-width: 1000px;
-  margin: 0 auto;
-  position: relative;
+  align-items: flex-start;
 }
 
 .hero::before {
@@ -415,26 +421,93 @@ body.menu-open {
   }
 }
 
-.scroll-hint {
-  position: absolute;
-  bottom: var(--space-xl);
-  left: var(--space-lg);
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: var(--text-muted);
-  opacity: 0;
-  animation: fadeUp 0.7s ease 1s forwards;
+/* Code editor mockup */
+.hero-code {
+  width: min(380px, 34vw);
+  z-index: 1;
+  display: none;
+  transform: translateX(-70px) translateY(40px);
 }
 
-.scroll-line {
-  width: 1px;
-  height: 50px;
-  background: linear-gradient(to bottom, var(--accent), transparent);
-  animation: scrollPulse 2.2s ease-in-out infinite;
+@media (min-width: 961px) {
+  .hero-code {
+    display: block;
+  }
+}
+
+.code-window {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+  font-family: ui-monospace, 'Cascadia Code', Menlo, monospace;
+  animation: codeFloat 7s ease-in-out infinite;
+}
+
+@keyframes codeFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.code-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 14px;
+  background: rgba(10, 10, 15, 0.85);
+  border-bottom: 1px solid var(--border);
+}
+
+.code-bar span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.code-bar span:nth-child(1) { background: var(--accent); }
+.code-bar span:nth-child(2) { background: #f5a623; }
+.code-bar span:nth-child(3) { background: #4ade80; }
+
+.code-bar em {
+  font-style: normal;
+  margin-left: auto;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.code-body {
+  margin: 0;
+  padding: 18px 20px 20px;
+  font-size: 0.78rem;
+  line-height: 1.85;
+  min-height: 210px;
+  overflow-x: hidden;
+}
+
+.code-body code {
+  color: #d7d8ea;
+  white-space: pre-wrap;
+}
+
+.code-line-k { color: var(--accent); }
+.code-line-s { color: #9ece6a; }
+.code-line-v { color: #7aa2f7; }
+.code-line-c { color: var(--text-muted); }
+
+.code-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background: var(--accent);
+  vertical-align: text-bottom;
+  animation: blinkCursor 1s steps(2, start) infinite;
+}
+
+@keyframes blinkCursor {
+  to { visibility: hidden; }
 }
 
 /* ============ ANIMATIONS ============ */
@@ -446,18 +519,6 @@ body.menu-open {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes scrollPulse {
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: scaleY(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: scaleY(1);
   }
 }
 
@@ -1356,6 +1417,10 @@ body.menu-open {
   .menu-toggle {
     display: flex;
   }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
   .hero::before,
   .hero::after,
   .about-visual::before,
@@ -1524,12 +1589,6 @@ body.menu-open {
     text-align: center;
   }
 
-  .scroll-hint {
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: var(--space-lg);
-  }
-
   .stats {
     grid-template-columns: 1fr 1fr;
     gap: var(--space-md);
@@ -1556,7 +1615,6 @@ body.menu-open {
   .hero-desc,
   .hero-cta,
   .hero-meta,
-  .scroll-hint,
   .project,
   .skill-card,
   .service-card,
@@ -1586,9 +1644,5 @@ body.menu-open {
 
   .stat:nth-child(3) .stat-bar {
     width: 48%;
-  }
-
-  .scroll-hint {
-    display: none;
   }
 }
