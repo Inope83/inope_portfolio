@@ -51,7 +51,7 @@
     if (!window.matchMedia('(max-width: 960px)').matches) setMenu(false);
   });
 
-  // Reveal animations on scroll
+  // Reveal animations on scroll (single query reused by the stagger below)
   var revealEls = document.querySelectorAll(
     '.project, .skill-card, .service-card, .timeline-item'
   );
@@ -60,13 +60,12 @@
       if (entry.isIntersecting) entry.target.classList.add('visible');
     });
   }, { root: null, rootMargin: '0px 0px -60px 0px', threshold: 0.12 });
-  revealEls.forEach(function (el) { observer.observe(el); });
 
   // Stagger animations
-  document.querySelectorAll('.project, .skill-card, .service-card, .timeline-item')
-    .forEach(function (el, index) {
-      el.style.transitionDelay = (index * 0.08) + 's';
-    });
+  revealEls.forEach(function (el, index) {
+    observer.observe(el);
+    el.style.transitionDelay = (index * 0.08) + 's';
+  });
 
   // Stat counter animation
   var statEls = document.querySelectorAll('.stat-num');
@@ -111,22 +110,31 @@
     sections.forEach(function (s) { navObserver.observe(s); });
   }
 
-  // Back to top button
+  // Scroll effects: header background + back-to-top visibility.
+  // One passive, rAF-throttled handler instead of two scroll listeners, so a
+  // scroll frame triggers a single style update rather than two.
   var backTop = document.getElementById('backTop');
-  if (backTop) {
-    window.addEventListener('scroll', function () {
-      backTop.classList.toggle('visible', window.scrollY > 600);
-    });
-    backTop.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: isMobile ? 'auto' : 'smooth' });
-    });
+  var header = document.querySelector('.header');
+  var scrollScheduled = false;
+
+  function updateOnScroll() {
+    var y = window.scrollY;
+    if (backTop) backTop.classList.toggle('visible', y > 600);
+    if (header) header.classList.toggle('scrolled', y > 50);
+    scrollScheduled = false;
   }
 
-  // Header background change on scroll
-  var header = document.querySelector('.header');
-  if (header) {
+  if (backTop || header) {
     window.addEventListener('scroll', function () {
-      header.classList.toggle('scrolled', window.scrollY > 50);
+      if (scrollScheduled) return;
+      scrollScheduled = true;
+      window.requestAnimationFrame(updateOnScroll);
+    }, { passive: true });
+  }
+
+  if (backTop) {
+    backTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: isMobile ? 'auto' : 'smooth' });
     });
   }
 
@@ -134,7 +142,6 @@
   (function () {
     var codeEl = document.getElementById('typedCode');
     if (!codeEl) return;
-    if (!window.matchMedia('(min-width: 961px)').matches) return;
 
     var lines = [
       { text: 'const developer = {', cls: 'code-line-k' },
@@ -146,39 +153,72 @@
       { text: '};', cls: 'code-line-k' }
     ];
 
-    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
     function renderDone() {
-      codeEl.innerHTML = lines.map(function (l) {
-        return '<span class="' + l.cls + '">' + l.text + '</span>';
-      }).join('\n') + '<span class="code-cursor"></span>';
+      var frag = document.createDocumentFragment();
+      lines.forEach(function (l, i) {
+        if (i) frag.appendChild(document.createTextNode('\n'));
+        var span = document.createElement('span');
+        span.className = l.cls;
+        span.textContent = l.text;
+        frag.appendChild(span);
+      });
+      var cursor = document.createElement('span');
+      cursor.className = 'code-cursor';
+      frag.appendChild(cursor);
+      codeEl.textContent = '';
+      codeEl.appendChild(frag);
     }
 
-    if (reduceMotion) {
+    // If the viewport is too narrow at load, or the user prefers reduced
+    // motion, render the final state so the panel is never left blank.
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var mqDesktop = window.matchMedia('(min-width: 961px)');
+    if (reduceMotion || !mqDesktop.matches) {
       renderDone();
       return;
     }
 
-    var done = [];
-    var li = 0, ci = 0, cur = '';
+    // Append characters to a live text node instead of rewriting innerHTML on
+    // every tick: the previous version re-parsed the whole block ~250 times,
+    // which forced a full re-layout of the panel each frame.
+    var span = document.createElement('span');
+    span.className = lines[0].cls;
+    var cursor = document.createElement('span');
+    cursor.className = 'code-cursor';
+    codeEl.textContent = '';
+    codeEl.appendChild(span);
+    codeEl.appendChild(cursor);
+
+    var li = 0, ci = 0;
     var speed = 18;
 
     function type() {
-      if (li >= lines.length) { renderDone(); return; }
       var line = lines[li];
       if (ci < line.text.length) {
-        cur += line.text.charAt(ci) === ' ' ? '\u00A0' : line.text.charAt(ci);
+        var ch = line.text.charAt(ci);
+        span.appendChild(document.createTextNode(ch === ' ' ? '\u00A0' : ch));
         ci++;
       } else {
-        done.push('<span class="' + line.cls + '">' + cur + '</span>');
-        cur = '';
-        ci = 0;
         li++;
         if (li >= lines.length) { renderDone(); return; }
+        span.className = lines[li].cls;
+        span = document.createTextNode('\n');
+        codeEl.insertBefore(span, cursor);
+        span = document.createElement('span');
+        span.className = lines[li].cls;
+        codeEl.insertBefore(span, cursor);
+        ci = 0;
       }
-      codeEl.innerHTML = done.join('\n') + '<span class="' + lines[li].cls + '">' + cur +
-        '</span><span class="code-cursor"></span>';
       setTimeout(type, speed);
+    }
+
+    // Keep the finished panel correct if the window is resized across the
+    // desktop breakpoint while the typewriter is mid-run.
+    var onChange = function () { renderDone(); };
+    if (mqDesktop.addEventListener) {
+      mqDesktop.addEventListener('change', onChange, { once: true });
+    } else if (mqDesktop.addListener) {
+      mqDesktop.addListener(onChange);
     }
 
     type();
