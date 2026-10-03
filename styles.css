@@ -1921,7 +1921,10 @@ body.menu-open {
   }
 }
 
-/* ============ MOBILE: DISABLE SCROLL FX ============ */
+/* ============ MOBILE: LIGHTER MOTION ============
+   Phones keep every animation — they are just shorter and free of the
+   scroll-linked effects. Everything here still animates opacity/transform
+   only, so it stays on the compositor. */
 @media (max-width: 960px) {
   html {
     scroll-behavior: auto;
@@ -1931,24 +1934,33 @@ body.menu-open {
   .hero-title .line,
   .hero-desc,
   .hero-cta,
-  .hero-meta,
+  .hero-meta {
+    animation-duration: 0.4s !important;
+  }
+
+  /* Scroll reveals stay, just quicker, and the per-element stagger from the
+     JS is halved so the last row never feels sluggish. */
   .project,
   .skill,
   .service,
-  .timeline-item,
-  .nav.open,
-  .nav.open a {
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-    transition: none !important;
+  .timeline-item {
+    transition-duration: 0.3s !important;
+    transition-delay: 0s !important;
   }
 
+  .nav.open {
+    animation-duration: 0.18s !important;
+  }
+
+  .nav.open a {
+    animation-duration: 0.18s !important;
+  }
+
+  /* The scaleX rules stay animated, just without the staggered delay. */
   .stat-bar,
   .skill-rule-fill {
-    transform: scaleX(1) !important;
-    animation: none !important;
-    transition: none !important;
+    animation-duration: 0.55s !important;
+    animation-delay: 0s !important;
   }
 
   .stat:nth-child(1) .stat-bar {

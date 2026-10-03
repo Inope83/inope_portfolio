@@ -76,12 +76,12 @@
       statObserver.unobserve(el);
       var target = parseInt(el.getAttribute('data-count'), 10) || 0;
       var suffix = target >= 100 ? '%' : '+';
-      if (isMobile || !window.requestAnimationFrame) {
+      if (!window.requestAnimationFrame) {
         el.textContent = target + suffix;
         return;
       }
       var start = null;
-      var duration = 1400;
+      var duration = isMobile ? 800 : 1400;
       function step(ts) {
         if (!start) start = ts;
         var p = Math.min((ts - start) / duration, 1);
@@ -169,14 +169,16 @@
       codeEl.appendChild(frag);
     }
 
-    // If the viewport is too narrow at load, or the user prefers reduced
-    // motion, render the final state so the panel is never left blank.
+    // Only prefers-reduced-motion skips the typing. Phones run it too: the
+    // per-tick work is a single text-node append, so it stays cheap.
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var mqDesktop = window.matchMedia('(min-width: 961px)');
-    if (reduceMotion || !mqDesktop.matches) {
+    if (reduceMotion) {
       renderDone();
       return;
     }
+
+    // Needed by the resize handler at the bottom of this block.
+    var mqDesktop = window.matchMedia('(min-width: 961px)');
 
     // Append characters to a live text node instead of rewriting innerHTML on
     // every tick: the previous version re-parsed the whole block ~250 times,
