@@ -1,104 +1,102 @@
-# portfolio
+# Inope83 — Personal Portfolio
 
-127.0.0.1
-Inope Lopes — Software Developer
+Static one-page portfolio for **Angelino Rosales Lopes** — software developer and engineering
+student based in Dili, Timor-Leste. The goal is contributing to the country's digital
+transformation with clean, reliable web applications.
 
-SOFTWARE DEVELOPER
-Crafting code that matters.
+[![GitHub](https://img.shields.io/badge/GitHub-Inope83-14B8A6?style=flat-square&logo=github)](https://github.com/Inope83)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-angelino-14B8A6?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/ange-lopes-61977b3b6/)
+[![Email](https://img.shields.io/badge/Email-angelinorosaleslopes1234@gmail.com-14B8A6?style=flat-square&logo=gmail)](mailto:angelinorosaleslopes1234@gmail.com)
 
-I build software solutions that are clean, efficient, and reliable.
+---
 
-About
-Hello, I'm Inope.
+## Stack
 
-I'm an engineering student at UNTL's Faculty of Engineering, Science and Technology, on a path to becoming a software developer. Passionate about coding, problem-solving, and building applications that make a difference.
+Plain HTML, CSS and vanilla JavaScript — no build step, no framework, no runtime dependency.
 
-I'm currently expanding my skills in web and software development, with the goal of contributing to the digital transformation in Timor-Leste.
+```
+index.html      markup + section copy
+styles.css      design tokens, layout, responsive rules
+script.js       typewriter, scroll reveal, mobile menu, stat counters
+fonts/          self-hosted WOFF2 (Plus Jakarta Sans, Inter, JetBrains Mono)
+images/         responsive WebP with srcset
+DESING.MD       design system reference (palette, type scale, spacing)
+```
 
-3+Years learning
+## Run locally
 
-5+Projects built
+The site is static, so any HTTP server works — do **not** open `index.html` over `file://`,
+the reveal animations and fonts need a real origin.
 
-3+Technologies
+```bash
+git clone https://github.com/Inope83/inope_portfolio.git
+cd inope_portfolio
+python3 -m http.server 8000
+# open http://localhost:8000
+```
 
-100%Commitment
+## Design system
 
-Selected Work
-Projects
-E-commerce Website
+Warm teal on ivory, built around hairline rules instead of card containers.
 
-Online store with product catalog, shopping cart, and order management.
+| Token | Value |
+| --- | --- |
+| Canvas | `#FEFCE8` |
+| Primary | `#14B8A6` |
+| Primary hover | `#0D9488` |
+| Ink | `#134E4A` |
+| Ink muted | `#688E8B` |
+| Border | `#E8E6D5` |
 
-HTML CSS JavaScript Django MySQL
-Hotel Booking System
+Type: Plus Jakarta Sans for headings, Inter for body, JetBrains Mono for labels and code.
 
-Web system for managing hotel rooms and reservations.
+Accessibility and performance behaviour:
 
-Python Django Bootstrap MySQL
-Route Visualization System
+- Every animation is `prefers-reduced-motion` aware and sits on the compositor
+  (`opacity` / `transform` only).
+- A `<noscript>` rule keeps the scroll-reveal sections visible if JavaScript is unavailable.
+- Images use WebP + `srcset`; fonts are self-hosted and preloaded.
 
-System to visualize transportation routes and find fastest paths.
+## Featured work
 
-Python NetworkX Matplotlib Jupyter
-Personal Portfolio Website
+| Project | Stack |
+| --- | --- |
+| Correspondence Management System — letter workflows with hierarchical approvals, tracking codes and role-based access | Python, Django |
+| E-commerce Website — product catalog, cart, order management and checkout | HTML, CSS, JavaScript, Django, MySQL |
+| Personal Portfolio Website — this site: projects, skills and career timeline | HTML, CSS, JavaScript |
+| APORTIL — ticket and booking management for boat trips, with payment states and periodic reports | PHP, MySQL |
 
-Personal website to showcase projects and skills.
+## Skills
 
-HTML CSS JavaScript Responsive
+| Area | Level | Stack |
+| --- | --- | --- |
+| Frontend | 85% | HTML, CSS, JavaScript, Bootstrap, Responsive Design |
+| Backend | 70% | Python, Django, REST API, MySQL, Database Management |
+| Tools | 75% | Git, GitHub, VS Code, Figma, Command Line |
 
-What I offer
-Services
-Web Development
+## Services
 
-Building responsive and modern websites using HTML, CSS, JavaScript, and Django. From landing pages to complete web applications.
-Backend Development
+- **Web Development** — responsive, modern sites with HTML, CSS, JavaScript and Django,
+  from landing pages to complete web applications.
+- **Backend Development** — backend systems and APIs with Python and Django.
+- **UI / UX Design** — simple, user-friendly interfaces.
 
-Developing backend systems and APIs using Python and Django for reliable and scalable applications.
-UI / UX Design
+## Experience
 
-Designing simple and user-friendly interfaces that improve user experience and engagement.
+**Engineering Student** — Universidade Nacional Timor Lorosa'e (UNTL), 2023 – present
+Faculty of Engineering, Science and Technology. Focus on software development, web
+development and computer systems.
 
-Skills
-What I use
+**Self-Taught Developer** — Personal Projects, 2024 – present
+Learning through online courses and building projects: HTML, CSS, JavaScript, Python
+and Django.
 
-◆
-Frontend
+## Contact
 
-HTML, CSS, JavaScript, Bootstrap, Responsive Design
+[angelinorosaleslopes1234@gmail.com](mailto:angelinorosaleslopes1234@gmail.com) ·
+[GitHub](https://github.com/Inope83) ·
+[LinkedIn](https://www.linkedin.com/in/ange-lopes-61977b3b6/)
 
-Backend
+## License
 
-Python, Django, REST API, MySQL, Database Management
-
-Tools
-
-Git, GitHub, VS Code, Figma, Command Line
-
-Career
-Experience
-Engineering Student
-
-Universidade Nacional Timor Lorosa'e (UNTL) · 2023 – Present
-
-Studying at the Faculty of Engineering, Science and Technology. Focus on software development, web development, and computer systems.
-Self-Taught Developer
-
-Personal Projects · 2024 – Present
-
-Learning programming through online courses and building projects. Mastering HTML, CSS, JavaScript, Python, and Django.
-
-Kind words
-Testimonials
-
-    "Hardworking student with strong interest in technology and programming. Always eager to learn and improve."
-    — Lecturer, UNTL 
-
-    "Quick learner who is always motivated to build useful software solutions. Great potential for growth."
-    — Project Partner 
-
-Contact
-Let's work together
-
-Have a project in mind or just want to say hi? I'd love to hear from you.
-
-<inope@email.com>
+All rights reserved.
