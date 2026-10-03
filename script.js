@@ -53,7 +53,7 @@
 
   // Reveal animations on scroll (single query reused by the stagger below)
   var revealEls = document.querySelectorAll(
-    '.project, .skill-card, .service-card, .timeline-item'
+    '.project, .service, .skill, .timeline-item'
   );
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
